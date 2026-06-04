@@ -15,11 +15,11 @@ st.set_page_config(page_title="Sales Data Analysis", layout="wide")
 st.title("Sales Data Analysis Dashboard")
 
 uploaded_file = st.file_uploader(
-    "Upload your sales data file (CSV or Excel)",
-      type=["csv", "xlsx"]
+    "Upload your sales data file",
+      type=["csv", "xlsx", "xls"]
 )
 
-if uploaded_file:
+if uploaded_file is not None:
     raw_data = load_data(uploaded_file)
     df = preprocess_data(uploaded_file)
     

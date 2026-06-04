@@ -3,7 +3,7 @@ import pandas as pd
 def load_data(file_path):
     if file_path.endswith('.csv'):
         df = pd.read_csv(file_path, encoding='cp1252')
-    elif file_path.endswith('.xlsx'):
+    elif file_path.endswith(('.xlsx', '.xls')):
         df = pd.read_excel(file_path)
     else:
         raise ValueError("Unsupported file format. Please provide a .csv or .xlsx file.")
