@@ -5,7 +5,7 @@ from helper import (
     get_cat_columns,
     date_columns,
     sales_summary,
-    plot_sales_over_time,
+    plot_pie_chart,
     plot_sales_by_category,
     plot_top_items
 )
@@ -20,7 +20,6 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-    raw_data = load_data(uploaded_file)
     df = preprocess_data(uploaded_file)
     
     st.subheader("Preview:")
@@ -44,7 +43,9 @@ if uploaded_file is not None:
     st.subheader("Visualizations")
     if date_cols:
         date_col = st.selectbox("Select Date Column", date_cols)
-        fig = plot_sales_over_time(df, date_col, 'total_sales')
+        year_col = f"{date_col}_year"
+        df[year_col] = df[date_col].dt.year
+        fig = plot_pie_chart(df, year_col)
         st.plotly_chart(fig, use_container_width=True)
     
     if cat_cols:
