@@ -26,48 +26,47 @@ def sales_summary(df):
 
     return summary
 
-def plot_sales_over_time(df, date_col, sales_col):
-    sales_trend = (
-        df.groupby(date_col)[sales_col]
-        .sum()
-        .sort_values(date_col)
-    )
+def plot_pie_chart(df, category_col):
+    category_counts = df[category_col].value_counts().reset_index()
+    category_counts.columns = [category_col, 'count']
 
-    return px.line(
-        sales_trend,
-        x = date_col,
-        y = sales_col,
-        title = 'Sales Over Time',
-        markers = True
+    return px.pie(
+        category_counts,
+        names=category_col,
+        values='count',
+        title=f'Distribution of {category_col}',
+        hole=0.4
     )
 
 def plot_sales_by_category(df, category_col, sales_col):
     category_sales = (
         df.groupby(category_col)[sales_col]
         .sum()
-        .sort_values(sales_col, ascending=False)
+        .sort_values(ascending=False)
+        .reset_index()
     )
 
     return px.bar(
         category_sales,
-        x = category_col,
-        y = sales_col,
-        title = 'Sales by Category',
-        text_auto = True
+        x=category_col,
+        y=sales_col,
+        title='Sales by Category',
+        text_auto=True
     )
 
 def plot_top_items(df, category_col, sales_col, top_n=10):
     top_items = (
         df.groupby(category_col)[sales_col]
         .sum()
-        .sort_values(sales_col, ascending=False)
+        .sort_values(ascending=False)
         .head(top_n)
+        .reset_index()
     )
 
     return px.bar(
         top_items,
-        x = category_col,
-        y = sales_col,
-        title = f'Top {top_n} {category_col} by Sales',
-        text_auto = True
+        x=category_col,
+        y=sales_col,
+        title=f'Top {top_n} {category_col} by Sales',
+        text_auto=True
     )
